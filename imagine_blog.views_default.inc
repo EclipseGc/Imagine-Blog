@@ -12,7 +12,7 @@ function imagine_blog_views_default_views() {
 
   $view = new view;
   $view->name = 'imagine_blog';
-  $view->description = '';
+  $view->description = 'An Imagine profile specific view override for the default blog output.';
   $view->tag = 'default';
   $view->base_table = 'node';
   $view->human_name = 'Imagine Blog';
@@ -68,9 +68,53 @@ function imagine_blog_views_default_views() {
     'blog' => 'blog',
   );
 
-  /* Display: Content pane */
-  $handler = $view->new_display('panel_pane', 'Content pane', 'panel_pane_1');
+  /* Display: Site Blog */
+  $handler = $view->new_display('panel_pane', 'Site Blog', 'panel_pane_1');
+  $handler->display->display_options['display_description'] = 'A site wide aggregate of all blog content by all authors.';
   $handler->display->display_options['pane_title'] = 'Imagine Blog';
+  $handler->display->display_options['pane_description'] = 'A site wide aggregate of all blog content by all authors.';
+  $handler->display->display_options['pane_category']['name'] = 'Imagine Blog';
+  $handler->display->display_options['pane_category']['weight'] = '0';
+
+  /* Display: User Blog Full */
+  $handler = $view->new_display('panel_pane', 'User Blog Full', 'panel_pane_2');
+  $handler->display->display_options['defaults']['arguments'] = FALSE;
+  /* Contextual filter: User: Uid */
+  $handler->display->display_options['arguments']['uid']['id'] = 'uid';
+  $handler->display->display_options['arguments']['uid']['table'] = 'users';
+  $handler->display->display_options['arguments']['uid']['field'] = 'uid';
+  $handler->display->display_options['arguments']['uid']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['uid']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['pane_title'] = 'User Blog Full';
+  $handler->display->display_options['pane_category']['name'] = 'Imagine Blog';
+  $handler->display->display_options['pane_category']['weight'] = '0';
+  $handler->display->display_options['argument_input'] = array(
+    'uid' => array(
+      'type' => 'context',
+      'context' => 'user.uid',
+      'context_optional' => 0,
+      'panel' => '0',
+      'fixed' => '',
+      'label' => 'User: Uid',
+    ),
+  );
+  $translatables['imagine_blog'] = array(
+    t('Master'),
+    t('more'),
+    t('Apply'),
+    t('Reset'),
+    t('Sort by'),
+    t('Asc'),
+    t('Desc'),
+    t('Items per page'),
+    t('- All -'),
+    t('Offset'),
+    t('Site Blog'),
+    t('A site wide aggregate of all blog content by all authors.'),
+    t('Imagine Blog'),
+    t('User Blog Full'),
+    t('All'),
+  );
   $export['imagine_blog'] = $view;
 
   return $export;
