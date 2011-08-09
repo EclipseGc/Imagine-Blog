@@ -219,6 +219,138 @@ function imagine_blog_default_page_manager_pages() {
   $page = new stdClass;
   $page->disabled = FALSE; /* Edit this to true to make a default page disabled initially */
   $page->api_version = 1;
+  $page->name = 'imagine_blog_add';
+  $page->task = 'page';
+  $page->admin_title = 'Imagine Blog Add';
+  $page->admin_description = '';
+  $page->path = 'blog/add';
+  $page->access = array(
+    'plugins' => array(
+      0 => array(
+        'name' => 'role',
+        'settings' => array(
+          'rids' => array(
+            0 => 3,
+            1 => 5,
+          ),
+        ),
+        'context' => 'logged-in-user',
+        'not' => FALSE,
+      ),
+    ),
+    'logic' => 'and',
+  );
+  $page->menu = array(
+    'type' => 'action',
+    'title' => 'Add Blog',
+    'name' => 'navigation',
+    'weight' => '0',
+    'parent' => array(
+      'type' => 'none',
+      'title' => '',
+      'name' => 'navigation',
+      'weight' => '0',
+    ),
+  );
+  $page->arguments = array();
+  $page->conf = array(
+    'admin_paths' => TRUE,
+  );
+  $page->default_handlers = array();
+  $handler = new stdClass;
+  $handler->disabled = FALSE; /* Edit this to true to make a default handler disabled initially */
+  $handler->api_version = 1;
+  $handler->name = 'page_imagine_blog_add_menu_context';
+  $handler->task = 'page';
+  $handler->subtask = 'imagine_blog_add';
+  $handler->handler = 'menu_context';
+  $handler->weight = 0;
+  $handler->conf = array(
+    'title' => 'Context Admin',
+    'no_blocks' => FALSE,
+    'css_id' => '',
+    'css' => '',
+    'contexts' => array(),
+    'relationships' => array(),
+    'context_admin_options' => 'node_create_menu',
+    'submitted_context' => 'empty',
+    'context_admin_options_items' => 'blog',
+  );
+  $page->default_handlers[$handler->name] = $handler;
+  $pages['imagine_blog_add'] = $page;
+
+  $page = new stdClass;
+  $page->disabled = FALSE; /* Edit this to true to make a default page disabled initially */
+  $page->api_version = 1;
+  $page->name = 'imagine_blog_administration';
+  $page->task = 'page';
+  $page->admin_title = 'Imagine Blog Administration';
+  $page->admin_description = '';
+  $page->path = 'blog/admin';
+  $page->access = array(
+    'plugins' => array(
+      0 => array(
+        'name' => 'role',
+        'settings' => array(
+          'rids' => array(
+            0 => 3,
+          ),
+        ),
+        'context' => 'logged-in-user',
+        'not' => FALSE,
+      ),
+    ),
+    'logic' => 'and',
+  );
+  $page->menu = array(
+    'type' => 'tab',
+    'title' => 'Administer',
+    'name' => 'navigation',
+    'weight' => '10',
+    'parent' => array(
+      'type' => 'none',
+      'title' => '',
+      'name' => 'navigation',
+      'weight' => '0',
+    ),
+  );
+  $page->arguments = array();
+  $page->conf = array(
+    'admin_paths' => TRUE,
+  );
+  $page->default_handlers = array();
+  $handler = new stdClass;
+  $handler->disabled = FALSE; /* Edit this to true to make a default handler disabled initially */
+  $handler->api_version = 1;
+  $handler->name = 'page_imagine_blog_administration_menu_context';
+  $handler->task = 'page';
+  $handler->subtask = 'imagine_blog_administration';
+  $handler->handler = 'menu_context';
+  $handler->weight = 0;
+  $handler->conf = array(
+    'title' => 'Context Admin',
+    'no_blocks' => FALSE,
+    'css_id' => '',
+    'css' => '',
+    'contexts' => array(),
+    'relationships' => array(),
+    'context_admin_options' => 'views_bulk_menu',
+    'context_admin_vbo_machine_name' => 'imagine_blog_admin',
+    'context_admin_vbo_views_bulk_node_type' => array(
+      'blog' => 'blog',
+      'forum' => 0,
+      'image' => 0,
+      'news' => 0,
+      'page' => 0,
+    ),
+    'context_admin_vbo_views_bulk_published' => 'both',
+  );
+  $page->default_handlers[$handler->name] = $handler;
+  $pages['imagine_blog_administration'] = $page;
+
+  $page = new stdClass;
+  $page->disabled = FALSE; /* Edit this to true to make a default page disabled initially */
+  $page->api_version = 1;
   $page->name = 'imagine_user_blog';
   $page->task = 'page';
   $page->admin_title = 'Imagine User Blog';
