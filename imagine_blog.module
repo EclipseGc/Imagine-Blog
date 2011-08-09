@@ -5,3 +5,78 @@
  */
 
 include_once('imagine_blog.features.inc');
+
+function imagine_blog_menu() {
+  $items = array();
+  $items['node/%node/image/%'] = array(
+    'page callback' => 'imagine_blog_blog_image',
+    'page arguments' => array(1, 3),
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
+  return $items;
+}
+
+function imagine_blog_ctools_plugin_directory($owner, $plugin_type) {
+  return "plugins/$owner/$plugin_type";
+}
+
+function imagine_blog_theme($existing, $type, $theme, $path) {
+  return array(
+    'imagine_blog_main_blog' => array(
+      'variables' => array('node'),
+    ),
+  );
+}
+
+function theme_imagine_blog_main_blog($vars) {
+  drupal_add_css(drupal_get_path('module', 'imagine_blog') . '/css/imagine_blog_main_blog.css');
+  $node = $vars['node'];
+  $style = $vars['style'];
+  $field_settings = $vars['field_settings'];
+  $output = '<div class="blog clearfix">';
+  $output .= '<h2>' . l($node->title, 'node/' . $node->nid) . '</h2>';
+
+  $language = field_language('node', $node, 'body');
+  $field_output = field_view_field('node', $node, 'body', $field_settings, $language);
+  if ($node->field_blog_images) {
+    $image = array_pop($node->field_blog_images['und']);
+    $output .= '<div class="blog-body"><div class="blog-image">' . l(theme('image_style', array('style_name' => $style, 'path' => $image['uri'], 'alt' => $image['alt'], 'title' => $image['title'])), 'node/' . $node->nid, array('html' => TRUE)) . '</div>' . render($field_output) . '</div>';
+  }
+  else {
+    $output .= '<div class="blog-body">' . render($field_output) . '</div>';
+  }
+
+  if ($node->field_blog_content) {
+    $term = taxonomy_term_load($node->field_blog_content['und'][0]['tid']);
+    $output .= '<div class="blog-meta">' . t('@date by: !author in: !term', array('@date' => date('M j, Y', $node->created), '!author' => l($node->name, 'user/' . $node->uid), '!term' => l($term->name, 'taxonomy/term/' . $term->tid))) . '</div>';
+  }
+  else {
+    $output .= '<div class="blog-meta">' . t('@date by: !author', array('@date' => date('M j, Y', $node->created), '!author' => l($node->name, 'user/' . $node->uid))) . '</div>';
+  }
+  $output .= '</div>';
+  return $output;
+}
+
+function imagine_blog_blog_image($node, $fid, $preset = '--none--') {
+  $output = '';
+  $image_fid = FALSE;
+  if ($node->field_blog_images) {
+    foreach ($node->field_blog_images['und'] as $delta => $image) {
+      if ($image['fid'] == $fid) {
+        $image_fid = $delta;
+        break;
+      }
+    }
+    if ($image_fid !== FALSE) {
+      $image = $node->field_blog_images['und'][$image_fid];
+      if ($preset == '--none--') {
+        $output .= theme('image', array('path' => $image['uri'], 'alt' => $image['alt'], 'title' => $image['title']));
+      }
+      else {
+        $output .= theme('image_style', array('style_name' => $preset, 'path' => $image['uri'], 'alt' => $image['alt'], 'title' => $image['title']));
+      }
+    }
+  }
+  return $output;
+}

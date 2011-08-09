@@ -1,0 +1,44 @@
+.blog {
+  clear:both;
+  margin-bottom:1em;
+}
+
+.blog h2 {
+  margin-top:0;
+}
+
+.blog-image {
+  float:left;
+  margin-right:10px;
+  margin-bottom:10px;
+}
+
+.blog-meta {
+  font-size:.8em;
+  clear:both;
+}
+
+.blog-meta-side {
+  font-size:.8em;
+  float:left;
+  width:15%;
+}
+
+.blog-details {
+  float:left;
+  width:85%;
+}
+
+.blog-comment-count {
+  width:46px;
+  height:46px;
+  text-align:center;
+  background-color:#3f3f3f;
+  color:#ffffff;
+  line-height:43px;
+  font-size:1.5em;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  float:left;
+  margin:0 5px 5px 0;
+}

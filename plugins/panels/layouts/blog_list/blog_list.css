@@ -1,0 +1,16 @@
+#imagine-blog-blog-list-main {
+  width:39%;
+  float:left;
+  margin-right:1%;
+}
+
+#imagine-blog-blog-list-secondary {
+  width:59%;
+  float:left;
+  margin-left:1%;
+}
+
+#imagine-blog-blog-list-list {
+  width:100%;
+  clear:both;
+}
