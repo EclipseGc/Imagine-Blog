@@ -209,6 +209,23 @@ function imagine_blog_default_page_manager_handlers() {
   $handler->conf['display'] = $display;
   $export['blog_panel_context'] = $handler;
 
+  $handler = new stdClass;
+  $handler->disabled = FALSE; /* Edit this to true to make a default handler disabled initially */
+  $handler->api_version = 1;
+  $handler->name = 'blog_user_http_response';
+  $handler->task = 'blog_user';
+  $handler->subtask = '';
+  $handler->handler = 'http_response';
+  $handler->weight = 0;
+  $handler->conf = array(
+    'title' => 'Redirect',
+    'contexts' => array(),
+    'relationships' => array(),
+    'code' => '301',
+    'destination' => 'user/%user:uid/blog',
+  );
+  $export['blog_user_http_response'] = $handler;
+
   return $export;
 }
 
@@ -239,6 +256,8 @@ function imagine_blog_default_page_manager_pages() {
       ),
     ),
     'logic' => 'and',
+    'type' => 'none',
+    'settings' => NULL,
   );
   $page->menu = array(
     'type' => 'action',
@@ -301,6 +320,8 @@ function imagine_blog_default_page_manager_pages() {
       ),
     ),
     'logic' => 'and',
+    'type' => 'none',
+    'settings' => NULL,
   );
   $page->menu = array(
     'type' => 'tab',
@@ -357,18 +378,7 @@ function imagine_blog_default_page_manager_pages() {
   $page->admin_description = 'The dynamic page which contains all images for a particular user.';
   $page->path = 'user/%user/blog/view';
   $page->access = array(
-    'plugins' => array(
-      0 => array(
-        'name' => 'role',
-        'settings' => array(
-          'rids' => array(
-            0 => 4,
-          ),
-        ),
-        'context' => 'argument_entity_id:user_1',
-        'not' => FALSE,
-      ),
-    ),
+    'plugins' => array(),
     'logic' => 'and',
     'type' => 'none',
     'settings' => NULL,
@@ -412,15 +422,53 @@ function imagine_blog_default_page_manager_pages() {
     'css_id' => '',
     'css' => '',
     'contexts' => array(),
-    'relationships' => array(),
+    'relationships' => array(
+      0 => array(
+        'identifier' => 'Blog List Context',
+        'keyword' => 'view',
+        'name' => 'view_from_argument:imagine_blog-ctools_context_1',
+        'context' => array(
+          0 => 'empty',
+          1 => 'argument_entity_id:user_1',
+        ),
+        'id' => 1,
+      ),
+      1 => array(
+        'identifier' => 'Blog1 from View',
+        'keyword' => 'node1',
+        'name' => 'node_from_view',
+        'context' => 'relationship_view_from_argument:imagine_blog-ctools_context_1_1',
+        'row' => '1',
+        'id' => 1,
+      ),
+      2 => array(
+        'identifier' => 'Blog2 from View',
+        'keyword' => 'node2',
+        'name' => 'node_from_view',
+        'context' => 'relationship_view_from_argument:imagine_blog-ctools_context_1_1',
+        'row' => '2',
+        'id' => 2,
+      ),
+      3 => array(
+        'identifier' => 'Blog3 from View',
+        'keyword' => 'node3',
+        'name' => 'node_from_view',
+        'context' => 'relationship_view_from_argument:imagine_blog-ctools_context_1_1',
+        'row' => '3',
+        'id' => 3,
+      ),
+    ),
   );
   $display = new panels_display;
-  $display->layout = 'onecol';
+  $display->layout = 'blog_list';
   $display->layout_settings = array();
   $display->panel_settings = array(
     'style_settings' => array(
       'default' => NULL,
       'middle' => NULL,
+      'main' => NULL,
+      'secondary' => NULL,
+      'list' => NULL,
     ),
   );
   $display->cache = array();
@@ -429,15 +477,26 @@ function imagine_blog_default_page_manager_pages() {
   $display->panels = array();
     $pane = new stdClass;
     $pane->pid = 'new-1';
-    $pane->panel = 'middle';
-    $pane->type = 'views_panes';
-    $pane->subtype = 'imagine_blog-panel_pane_2';
+    $pane->panel = 'list';
+    $pane->type = 'views_row';
+    $pane->subtype = 'views_row';
     $pane->shown = TRUE;
     $pane->access = array();
     $pane->configuration = array(
-      'context' => array(
-        0 => 'argument_entity_id:user_1',
+      'rows' => array(
+        4 => '4',
+        5 => '5',
+        6 => '6',
+        7 => '7',
+        8 => '8',
+        9 => '9',
+        10 => '10',
       ),
+      'use_fields' => 0,
+      'fields' => array(),
+      'context' => 'relationship_view_from_argument:imagine_blog-ctools_context_1_1',
+      'override_title' => 1,
+      'override_title_text' => '',
     );
     $pane->cache = array();
     $pane->style = array(
@@ -447,7 +506,103 @@ function imagine_blog_default_page_manager_pages() {
     $pane->extras = array();
     $pane->position = 0;
     $display->content['new-1'] = $pane;
-    $display->panels['middle'][0] = 'new-1';
+    $display->panels['list'][0] = 'new-1';
+    $pane = new stdClass;
+    $pane->pid = 'new-2';
+    $pane->panel = 'list';
+    $pane->type = 'views_pager';
+    $pane->subtype = 'views_pager';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'context' => 'relationship_view_from_argument:imagine_blog-ctools_context_1_1',
+      'override_title' => 1,
+      'override_title_text' => '',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 1;
+    $display->content['new-2'] = $pane;
+    $display->panels['list'][1] = 'new-2';
+    $pane = new stdClass;
+    $pane->pid = 'new-3';
+    $pane->panel = 'main';
+    $pane->type = 'blog_main';
+    $pane->subtype = 'blog_main';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'label' => 'hidden',
+      'formatter' => 'text_trimmed',
+      'style' => 'medium',
+      'context' => 'relationship_node_from_view_1',
+      'override_title' => 1,
+      'override_title_text' => '',
+      'formatter_settings' => array(),
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 0;
+    $display->content['new-3'] = $pane;
+    $display->panels['main'][0] = 'new-3';
+    $pane = new stdClass;
+    $pane->pid = 'new-4';
+    $pane->panel = 'secondary';
+    $pane->type = 'blog_main';
+    $pane->subtype = 'blog_main';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'label' => 'hidden',
+      'formatter' => 'text_trimmed',
+      'style' => 'thumbnail',
+      'context' => 'relationship_node_from_view_2',
+      'override_title' => 1,
+      'override_title_text' => '',
+      'formatter_settings' => array(),
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 0;
+    $display->content['new-4'] = $pane;
+    $display->panels['secondary'][0] = 'new-4';
+    $pane = new stdClass;
+    $pane->pid = 'new-5';
+    $pane->panel = 'secondary';
+    $pane->type = 'blog_main';
+    $pane->subtype = 'blog_main';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'label' => 'hidden',
+      'formatter' => 'text_trimmed',
+      'style' => 'thumbnail',
+      'context' => 'relationship_node_from_view_3',
+      'override_title' => 1,
+      'override_title_text' => '',
+      'formatter_settings' => array(),
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 1;
+    $display->content['new-5'] = $pane;
+    $display->panels['secondary'][1] = 'new-5';
   $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = '0';
   $handler->conf['display'] = $display;

@@ -346,18 +346,37 @@ function imagine_blog_views_default_views() {
   $handler->display->display_options['arguments']['field_blog_content_tid']['id'] = 'field_blog_content_tid';
   $handler->display->display_options['arguments']['field_blog_content_tid']['table'] = 'field_data_field_blog_content';
   $handler->display->display_options['arguments']['field_blog_content_tid']['field'] = 'field_blog_content_tid';
+  $handler->display->display_options['arguments']['field_blog_content_tid']['default_action'] = 'default';
   $handler->display->display_options['arguments']['field_blog_content_tid']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['field_blog_content_tid']['default_argument_options']['argument'] = 'all';
   $handler->display->display_options['arguments']['field_blog_content_tid']['default_argument_skip_url'] = 0;
   $handler->display->display_options['arguments']['field_blog_content_tid']['summary']['number_of_records'] = '0';
   $handler->display->display_options['arguments']['field_blog_content_tid']['summary']['format'] = 'default_summary';
   $handler->display->display_options['arguments']['field_blog_content_tid']['summary_options']['items_per_page'] = '25';
   $handler->display->display_options['arguments']['field_blog_content_tid']['break_phrase'] = 0;
   $handler->display->display_options['arguments']['field_blog_content_tid']['not'] = 0;
+  /* Contextual filter: User: Uid */
+  $handler->display->display_options['arguments']['uid']['id'] = 'uid';
+  $handler->display->display_options['arguments']['uid']['table'] = 'users';
+  $handler->display->display_options['arguments']['uid']['field'] = 'uid';
+  $handler->display->display_options['arguments']['uid']['relationship'] = 'uid';
+  $handler->display->display_options['arguments']['uid']['default_argument_type'] = 'fixed';
+  $handler->display->display_options['arguments']['uid']['default_argument_skip_url'] = 0;
+  $handler->display->display_options['arguments']['uid']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['uid']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['uid']['summary_options']['items_per_page'] = '25';
+  $handler->display->display_options['arguments']['uid']['break_phrase'] = 0;
+  $handler->display->display_options['arguments']['uid']['not'] = 0;
   $handler->display->display_options['admin_title'] = 'Blog List Context';
   $handler->display->display_options['argument_input'] = array(
     'field_blog_content_tid' => array(
       'type' => 'context',
       'context' => 'entity:taxonomy_term.tid',
+      'context_optional' => 1,
+    ),
+    'uid' => array(
+      'type' => 'context',
+      'context' => 'entity:user.uid',
       'context_optional' => 1,
     ),
   );
